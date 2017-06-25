@@ -13,14 +13,14 @@ GmS=4*math.pi**2
 dt=0.001
 
 class Planeta:
-	def __init__(self,m,x, y, vx,vy):
+	def __init__(self,m,x, y, vx,vy,x2,y2,x3,y3):
 		self.m=m
 		self.x = x
 		self.y = y
 		self.vx = vx
 		self.vy = vy
-		self.r1=np.sqrt((x-1)**2+y**2) 
-		self.r2=np.sqrt((x+1)**2+y**2) 
+		self.r1=np.sqrt((x-x2)**2+(y-y2)**2) 
+		self.r2=np.sqrt((x+x2)**2+(y-y3)**2) 
 		self.E= 0.5*m*((vx**2)+(vy**2))-(GmS*m/self.r1 + GmS*m/self.r2)
 
 		
@@ -39,7 +39,10 @@ class Planeta:
 def wrap_angle(angle):
 	return angle%360
 
-terra=Planeta(1,0.1,1,0,0)
+p1=Planeta(1,1,0,0,0,0,0,-1,0)
+p2=Planeta(1,0,0,0,0,1,0,-1,0)
+p3=Planeta(1,-1,0,0,0,0,0,1,0)
+
 pygame.init()
 screen = pygame.display.set_mode((600,600))
 myfont = pygame.font.Font(None,60)
@@ -47,9 +50,10 @@ myfont = pygame.font.Font(None,60)
 space = pygame.image.load("space.png").convert()
 sun = pygame.image.load("sun.png").convert_alpha()
 planeta = pygame.image.load("planeta.png").convert_alpha()
-sun = pygame.transform.scale(sun,(50,50))
+sun = pygame.transform.scale(sun,(100,100))
+
 sunw,sunh=sun.get_size()
-pygame.display.set_caption("Duas estrelas e um planeta")	
+pygame.display.set_caption("3 planetas iguais e alinhados")	
 
 while True:
 	for event in pygame.event.get():
@@ -57,16 +61,12 @@ while True:
 			sys.exit()
 	planeta = pygame.transform.scale(planeta,(40,40))
 	screen.blit(space, (0,0))
-	screen.blit(sun, (25, 300-25))
-	screen.blit(sun, (600-75, 300-25))
 	
-	xant, yant=terra.x,terra.y
-	terra.movimento()
-	dx = terra.x - xant
-	dy = terra.y - yant
-	angulo=math.atan2(dy,dx)
-	angulo=wrap_angle(-math.degrees(angulo)+90)
-	dayplaneta = pygame.transform.rotate(planeta,angulo)
+	p1.movimento()
+	p2.movimento()
+	p3.movimento()
 	
-	screen.blit(dayplaneta, (terra.x*(600-25)/2 + (600-25)/2, terra.y*(600-25)/2 + (600-25)/2))
+	screen.blit(planeta, (p1.x*(600-20)/2 + (600-20)/2, p1.y*(600-20)/2 + (600-20)/2))
+	screen.blit(planeta, (p2.x*(600-20)/2 + (600-20)/2, p2.y*(600-20)/2 + (600-20)/2))
+	screen.blit(planeta, (p3.x*(600-20)/2 + (600-20)/2, p3.y*(600-20)/2 + (600-20)/2))
 	pygame.display.update()
