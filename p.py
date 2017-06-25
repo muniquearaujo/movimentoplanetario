@@ -39,9 +39,9 @@ class Planeta:
 def wrap_angle(angle):
 	return angle%360
 
-p1=Planeta(1,1,0,0,0,0,0,-1,0)
-p2=Planeta(1,0,0,0,0,1,0,-1,0)
-p3=Planeta(1,-1,0,0,0,0,0,1,0)
+p1=Planeta(1,1,0,0,0,0,np.sqrt(3),-1,0)
+p2=Planeta(1,0,np.sqrt(5),0,0,1,0,-1,0)
+p3=Planeta(1,-1,0,0,0,np.sqrt(3),0,1,0)
 
 pygame.init()
 screen = pygame.display.set_mode((600,600))
@@ -53,7 +53,7 @@ planeta = pygame.image.load("planeta.png").convert_alpha()
 sun = pygame.transform.scale(sun,(100,100))
 
 sunw,sunh=sun.get_size()
-pygame.display.set_caption("3 planetas iguais e alinhados")	
+pygame.display.set_caption("3 planetas equidistantes")	
 
 while True:
 	for event in pygame.event.get():
