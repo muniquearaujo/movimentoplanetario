@@ -19,13 +19,13 @@ class Planeta:
 		self.y = y
 		self.vx = vx
 		self.vy = vy
-		self.r=np.sqrt(x**2+y**2) 
-		self.E= 0.5*m*((vx**2)+(vy**2))-GmS*m/self.r
+		self.r1=np.sqrt((x-1)**2+y**2) 
+		self.r2=np.sqrt((x+1)**2+y**2) 
+		self.E= 0.5*m*((vx**2)+(vy**2))-(GmS*m/self.r1 + GmS*m/self.r2)
 
 		
 	def a(self,p):
-		r=np.sqrt(self.x**2+self.y**2)
-		return -((GmS*m)/r**3)*p
+		return -((GmS*m)/self.r1**3+(GmS*m)/self.r2**3)*p
 				
 	def movimento(self,):
 		ax = self.a(self.x)
@@ -34,12 +34,12 @@ class Planeta:
 		ay=self.a(self.y)
 		self.y=self.y+self.vy*dt+0.5*ay*dt**2
 		self.vy=self.vy+ay*dt
-		self.E=0.5*m*((self.vx**2)+(self.vy**2))-GmS*m/self.r
+		self.E=0.5*m*((self.vx**2)+(self.vy**2))-(GmS*m/self.r1+GmS*m/self.r2)
 		
 def wrap_angle(angle):
 	return angle%360
 
-terra=Planeta(1,1,0,0,2*np.pi)
+terra=Planeta(1,0.1,1,0,0)
 pygame.init()
 screen = pygame.display.set_mode((600,600))
 myfont = pygame.font.Font(None,60)
@@ -47,16 +47,18 @@ myfont = pygame.font.Font(None,60)
 space = pygame.image.load("space.png").convert()
 sun = pygame.image.load("sun.png").convert_alpha()
 planeta = pygame.image.load("planeta.png").convert_alpha()
+sun = pygame.transform.scale(sun,(50,50))
 sunw,sunh=sun.get_size()
-pygame.display.set_caption("O Sol e a Terra")	
+pygame.display.set_caption("Duas estrelas e um planeta")	
 
 while True:
 	for event in pygame.event.get():
 		if event.type in (QUIT,KEYDOWN):
 			sys.exit()
-	planeta = pygame.transform.scale(planeta,(50,50))
+	planeta = pygame.transform.scale(planeta,(40,40))
 	screen.blit(space, (0,0))
-	screen.blit(sun, (300-sunw/2, 300-sunh/2))
+	screen.blit(sun, (25, 300-25))
+	screen.blit(sun, (600-75, 300-25))
 	
 	xant, yant=terra.x,terra.y
 	terra.movimento()
@@ -66,5 +68,5 @@ while True:
 	angulo=wrap_angle(-math.degrees(angulo)+90)
 	dayplaneta = pygame.transform.rotate(planeta,angulo)
 	
-	screen.blit(dayplaneta,(terra.x*250+275,terra.y*250+275))
+	screen.blit(dayplaneta, (terra.x*(600-25)/2 + (600-25)/2, terra.y*(600-25)/2 + (600-25)/2))
 	pygame.display.update()
