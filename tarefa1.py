@@ -33,7 +33,7 @@ class Planeta:
 		self.vy=self.vy+ay*dt
 		self.E=0.5*mT*((self.vx**2)+(self.vy**2))-GmS*mT/self.r
 
-p1=Planeta(1.,0.,0.,2*math.pi+0.5)
+p1=Planeta(1.,0.,0.,2*math.pi+1.0)
 
 
 
