@@ -33,7 +33,7 @@ class Planeta:
 		self.vy=self.vy+ay*dt
 		self.E=0.5*mT*((self.vx**2)+(self.vy**2))-GmS*mT/self.r
 
-p1=Planeta(1.,0.,0.,2*math.pi+1.0)
+p1=Planeta(1.,0.,0.,2*math.pi)
 
 
 
@@ -61,7 +61,7 @@ plt.rc('font', **{'sans-serif' : 'Arial', 'family' : 'sans-serif'})
 plt.title(r'Planeta', fontsize=12)
 
 plt.grid()
-plt.plot(x,y,'g-', linewidth=2 )
+plt.plot(x,vx,'g-', linewidth=2 )
 
 plt.legend(loc='upper right')
 plt.axes().set_aspect('equal','datalim')
