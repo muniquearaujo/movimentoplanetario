@@ -17,6 +17,7 @@ class Planeta:
 		self.vx = vx
 		self.vy = vy
 		self.r=np.sqrt(x**2+y**2) 
+		self.v=v
 		self.E= 0.5*mT*((vx**2)+(vy**2))-GmS*mT/self.r
 
 		
@@ -32,7 +33,8 @@ class Planeta:
 		self.y=self.y+self.vy*dt+0.5*ay*dt**2
 		self.vy=self.vy+ay*dt
 		self.E=0.5*mT*((self.vx**2)+(self.vy**2))-GmS*mT/self.r
-
+		self.v=np.sqrt(vx**2+vy**2)
+		
 p1=Planeta(1.,0.,0.,2*math.pi+1.0)
 
 
@@ -42,13 +44,15 @@ t=np.arange(0, tmax, dt)
 
 x=np.zeros(t.size)
 y=np.zeros(t.size)
-vx=np.zeros(t.size)
+r=np.zeros(t.size)
+v=np.zeros(t.size)
 		
 for i in range(t.size):
 	p1.movimento(t[i])
 	x[i]=p1.x
 	y[i]=p1.y
-	vx[i]=p1.vx
+	r[i]=p1.r
+	v[i]=p1.v
 	
 plt.figure(figsize=(6,5), dpi=96)
 ax=plt.gca()
@@ -61,7 +65,7 @@ plt.rc('font', **{'sans-serif' : 'Arial', 'family' : 'sans-serif'})
 plt.title(r'Planeta', fontsize=12)
 
 plt.grid()
-plt.plot(x,vx,'g-', linewidth=2 )
+plt.plot(r,v,'g-', linewidth=2 )
 
 plt.legend(loc='upper right')
 plt.axes().set_aspect('equal','datalim')
